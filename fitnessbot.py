@@ -1,6 +1,5 @@
-import streamlit as st
+# Simple Fitness Recommendation Script
 
-# Function to calculate BMI
 def calculate_bmi(weight, height):
     bmi = weight / (height ** 2)
     if bmi < 18.5:
@@ -13,54 +12,49 @@ def calculate_bmi(weight, height):
         status = "Obese"
     return bmi, status
 
-# Function to suggest workouts
 def suggest_workout(goal):
     workouts = {
-        "Weight Loss": ["Cardio (Running, Cycling)", "HIIT Workouts", "Jump Rope"],
-        "Muscle Gain": ["Weight Lifting", "Bodyweight Exercises", "Progressive Overload"],
-        "Flexibility": ["Yoga", "Stretching", "Pilates"],
-        "General Fitness": ["Walking", "Swimming", "Light Cardio"]
+        "1": ["Cardio (Running, Cycling)", "HIIT Workouts", "Jump Rope"],
+        "2": ["Weight Lifting", "Bodyweight Exercises", "Progressive Overload"],
+        "3": ["Yoga", "Stretching", "Pilates"],
+        "4": ["Walking", "Swimming", "Light Cardio"]
     }
     return workouts.get(goal, ["No workout suggestions available"])
 
-# Function to suggest diet
 def suggest_diet(goal):
     diets = {
-        "Weight Loss": ["Lean protein", "Vegetables", "Low-carb diet"],
-        "Muscle Gain": ["High protein diet", "Healthy fats", "Complex carbs"],
-        "Flexibility": ["Balanced diet", "Hydration", "Anti-inflammatory foods"],
-        "General Fitness": ["Fruits", "Nuts", "Whole grains"]
+        "1": ["Lean protein", "Vegetables", "Low-carb diet"],
+        "2": ["High protein diet", "Healthy fats", "Complex carbs"],
+        "3": ["Balanced diet", "Hydration", "Anti-inflammatory foods"],
+        "4": ["Fruits", "Nuts", "Whole grains"]
     }
     return diets.get(goal, ["No diet suggestions available"])
 
-# Streamlit UI
-st.title("🏋️‍♂️ Fitness & Health Bot")
-st.write("Get personalized fitness, workout, and diet recommendations!")
+def main():
+    print("🏋️ Welcome to the Fitness Recommendation System")
 
-# BMI Calculator
-st.header("📊 BMI Calculator")
-weight = st.number_input("Enter your weight (kg)", min_value=1.0)
-height = st.number_input("Enter your height (m)", min_value=0.5, format="%.2f")
+    # BMI
+    weight = float(input("Enter your weight in kg: "))
+    height = float(input("Enter your height in meters: "))
+    bmi, status = calculate_bmi(weight, height)
+    print(f"\nYour BMI is {bmi:.2f} ({status})")
 
-if st.button("Calculate BMI"):
-    if weight and height:
-        bmi, status = calculate_bmi(weight, height)
-        st.success(f"Your BMI is **{bmi:.2f}** ({status})")
-    else:
-        st.warning("Please enter valid weight and height!")
+    # Goals
+    print("\nChoose your fitness goal:")
+    print("1. Weight Loss")
+    print("2. Muscle Gain")
+    print("3. Flexibility")
+    print("4. General Fitness")
+    goal = input("Enter the number of your goal: ")
 
-# Workout & Diet Suggestions
-st.header("🏃‍♂️ Fitness & Diet Suggestions")
-goal = st.selectbox("Select Your Fitness Goal", ["Weight Loss", "Muscle Gain", "Flexibility", "General Fitness"])
+    # Recommendations
+    print("\n🏋️ Recommended Workouts:")
+    for workout in suggest_workout(goal):
+        print(f"- {workout}")
 
-if st.button("Get Recommendations"):
-    workouts = suggest_workout(goal)
-    diet = suggest_diet(goal)
+    print("\n🥗 Recommended Diet:")
+    for item in suggest_diet(goal):
+        print(f"- {item}")
 
-    st.subheader("🏋️ Workouts")
-    for w in workouts:
-        st.write(f"- {w}")
-
-    st.subheader("🥗 Diet Recommendations")
-    for d in diet:
-        st.write(f"- {d}")
+if __name__ == "__main__":
+    main()
